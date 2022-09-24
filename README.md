@@ -1,7 +1,7 @@
-# Classroom
+# Shorts
 
 ## Para que serve essa aplicação?
-Aplicação onde o professor pode fazer upload de vídeo aulas para que os alunos possam assistir.
+Aplicação onde você pode fazer upload de vídeos curtos (shorts)
 
 ## Aprendizados
 - Upload de vídeos com o multer.
