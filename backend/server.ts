@@ -15,6 +15,15 @@ const videoStorage = multer.diskStorage({
   } // filename with the name of the file plus the timestamp
 });
 
+const thumbnailStorage = multer.diskStorage({
+  destination: 'thumbnails',
+  filename: (request, file, cb) => {
+    cb(null, file.fieldname + '_' + Date.now()
+      + path.extname(file.originalname)
+    )
+  }
+});
+
 const videoUpload = multer({
   storage: videoStorage, 
   limits: {
@@ -29,10 +38,27 @@ const videoUpload = multer({
   }
 });
 
+const thumbnailUpload = multer({
+  storage: thumbnailStorage,
+  limits: {
+    fileSize: 1024 * 1024 * 1 // 1 MB
+  },
+  fileFilter(request, file, cb) {
+    if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) { 
+      return cb(new Error('Please upload a video with mp4 or mkv format.'))
+    }
+    cb(null, true);
+  }
+});
+
 app.post("/uploadVideo", videoUpload.single('video'), (request, response) => {
-  response.json(request.file)
+  response.json(request.file);
 }, (error, request, response, next) => {
   response.status(400).json({ error: error.message })
+})
+
+app.post("/video/:id/thumbnail", thumbnailUpload.single('thumbnail'), (request, response) => {
+  response.json(request.file);
 })
 
 app.listen(3333, () => console.log("Server is running."));
