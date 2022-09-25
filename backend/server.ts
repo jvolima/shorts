@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import express from "express";
 import multer from "multer";
 import path from "path";
@@ -51,14 +52,33 @@ const thumbnailUpload = multer({
   }
 });
 
-app.post("/uploadVideo", videoUpload.single('video'), (request, response) => {
-  response.json(request.file);
+const prisma = new PrismaClient();
+
+app.post("/uploadVideo", videoUpload.single('video'), async (request, response) => {
+  const short = await prisma.short.create({
+    data: {
+      video_name: request!.file!.path,
+    }
+  })
+
+  return response.json(short);
 }, (error, request, response, next) => {
   response.status(400).json({ error: error.message })
-})
+});
 
-app.post("/video/:id/thumbnail", thumbnailUpload.single('thumbnail'), (request, response) => {
-  response.json(request.file);
-})
+app.post("/video/:id/thumbnail", thumbnailUpload.single('thumbnail'), async (request, response) => {
+  const { id } = request.params;
+
+  const shortUpdated = await prisma.short.update({
+    where: {
+      id
+    },
+    data: {
+      thumbnail_name: request!.file!.path
+    }
+  });
+
+  return response.json(shortUpdated);
+});
 
 app.listen(3333, () => console.log("Server is running."));
