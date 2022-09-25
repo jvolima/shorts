@@ -2,9 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import express, { request } from "express";
 import multer from "multer";
 import path from "path";
+import cors from "cors";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 const videoStorage = multer.diskStorage({
