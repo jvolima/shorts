@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import express from "express";
+import express, { request } from "express";
 import multer from "multer";
 import path from "path";
 
@@ -86,5 +86,11 @@ app.post("/video/:id/thumbnail", thumbnailUpload.single('thumbnail'), async (req
 }, (error, request, response, next) => {
   response.status(400).json({ error: error.message })
 });
+
+app.get("/videos", async (request, response) => {
+  const videos = await prisma.short.findMany();
+
+  return response.json(videos);
+})
 
 app.listen(3333, () => console.log("Server is running."));
