@@ -22,19 +22,20 @@ export function App() {
   }, [])
 
   return (
-    <div>
-      <h1 className="text-4xl text-violet-700">Shorts</h1>
+    <div className="max-w-7xl w-full mx-auto">
+      <h1 className="text-4xl text-violet-700 mt-6">Shorts</h1>
 
-      {
-        /*
+      <div className="mt-8">
         {videos.map(video => (
-          <video key={video.id} width="320" height="240" controls>
-            <source src="" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div key={video.id} className="max-w-xs w-full max-h-60 h-full">
+            <video poster={`http://localhost:3333/static-thumbnails/${video.thumbnail_name}`} controls>
+              <source src={`http://localhost:3333/static-videos/${video.video_name}`} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         ))}
-        */
-      }
+      </div>
+        
     </div>
   )
 }

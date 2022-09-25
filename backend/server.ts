@@ -8,6 +8,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/static-videos', express.static('videos'));
+app.use('/static-thumbnails', express.static('thumbnails'));
 
 const videoStorage = multer.diskStorage({
   destination: 'videos', // destination to store the video
